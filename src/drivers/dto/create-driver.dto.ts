@@ -1,11 +1,11 @@
-import { IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class CreateDriverDto {
   @IsString()
   name: string;
 
-  @IsString()
-  team: string;
+  @IsNumber()
+  teamId: number;
 
   // Add more validation as needed
 }

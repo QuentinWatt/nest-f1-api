@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DriversModule } from './drivers/drivers.module';
+import { TeamsModule } from './teams/teams.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { DriversModule } from './drivers/drivers.module';
       synchronize: true, // Automatically synchronize schema; turn off in production
     }),
     DriversModule,
+    TeamsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
