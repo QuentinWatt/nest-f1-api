@@ -5,6 +5,7 @@ import { Driver } from './entities/driver.entity';
 import { Repository } from 'typeorm';
 import { UpdateDriverDto } from './dto/update-driver.dto';
 import { Team } from './../teams/entities/team.entity';
+import { QueryDriverDto } from './dto/query-driver.dto';
 
 @Injectable()
 export class DriversService {
@@ -15,17 +16,37 @@ export class DriversService {
     private teamsRepository: Repository<Team>,
   ) {}
 
-  findAll(): Promise<Driver[]> {
-    return this.driversRepository.find();
+  findAll(query: QueryDriverDto): Promise<Driver[]> {
+    const { name, teamName } = query;
+
+    const queryBuilder = this.driversRepository.createQueryBuilder('driver');
+    queryBuilder.leftJoinAndSelect('driver.team', 'team');
+
+    if (name) {
+      queryBuilder.andWhere('driver.name LIKE :name', {
+        name: `%${name}%`,
+      });
+    }
+
+    if (teamName) {
+      queryBuilder.andWhere('driver.team.name LIKE :name', {
+        name: `%${teamName}%`,
+      });
+    }
+
+    return queryBuilder.getMany();
   }
 
   async findOne(id: number): Promise<Driver> {
-    const driver = await this.driversRepository.findOneBy({ id });
+    const driver = await this.driversRepository.findOne({
+      where: { id },
+      relations: ['team'],
+    });
     if (!driver) {
       throw new NotFoundException('Driver not found');
     }
 
-    return this.driversRepository.findOneBy({ id });
+    return driver;
   }
 
   async create(createDriverDto: CreateDriverDto): Promise<Driver> {
