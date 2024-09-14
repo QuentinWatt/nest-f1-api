@@ -15,7 +15,7 @@ import { TeamsModule } from './teams/teams.module';
       password: null,
       database: 'f1-api',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true, // Automatically synchronize schema; turn off in production
+      // synchronize: false, // Automatically synchronize schema; turn off in production
     }),
     DriversModule,
     TeamsModule,

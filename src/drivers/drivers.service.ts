@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateDriverDto } from './dto/create-driver.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Driver } from './entities/driver.entity';
 import { Repository } from 'typeorm';
 import { UpdateDriverDto } from './dto/update-driver.dto';
+import { Team } from 'src/teams/entities/team.entity';
 
 @Injectable()
 export class DriversService {
@@ -16,13 +17,23 @@ export class DriversService {
     return this.driversRepository.find();
   }
 
-  findOne(id: number): Promise<Driver> {
+  async findOne(id: number): Promise<Driver> {
+    const driver = await this.driversRepository.findOneBy({ id });
+    if (!driver) {
+      throw new NotFoundException('Driver not found');
+    }
+
     return this.driversRepository.findOneBy({ id });
   }
 
   async create(createDriverDto: CreateDriverDto): Promise<Driver> {
     try {
-      const driver = this.driversRepository.create(createDriverDto);
+      console.log(createDriverDto);
+
+      const driver = this.driversRepository.create({
+        name: createDriverDto.name,
+      });
+
       return await this.driversRepository.save(driver);
     } catch (error) {
       // Handle errors (e.g., logging or rethrowing as a custom exception)
@@ -33,7 +44,7 @@ export class DriversService {
   async update(id: number, updateDriverDto: UpdateDriverDto): Promise<Driver> {
     const driver = await this.driversRepository.findOneBy({ id });
     if (!driver) {
-      throw new Error('Driver not found');
+      throw new NotFoundException('Driver not found');
     }
 
     Object.assign(driver, updateDriverDto);

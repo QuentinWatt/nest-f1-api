@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -33,7 +33,7 @@ export class TeamsService {
   async update(id: number, updateTeamDto: UpdateTeamDto): Promise<Team> {
     const driver = await this.teamsRepository.findOneBy({ id });
     if (!driver) {
-      throw new Error('Driver not found');
+      throw new NotFoundException('Driver not found');
     }
 
     Object.assign(driver, updateTeamDto);
