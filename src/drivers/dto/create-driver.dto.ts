@@ -5,7 +5,7 @@ export class CreateDriverDto {
   name: string;
 
   @IsString()
-  team: string;
+  teamName: string;
 
   // Add more validation as needed
 }

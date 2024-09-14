@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DriversModule } from './drivers/drivers.module';
+import { TeamsModule } from './teams/teams.module';
 
 @Module({
   imports: [
@@ -14,9 +15,10 @@ import { DriversModule } from './drivers/drivers.module';
       password: null,
       database: 'f1-api',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true, // Automatically synchronize schema; turn off in production
+      // synchronize: false, // Automatically synchronize schema; turn off in production
     }),
     DriversModule,
+    TeamsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
