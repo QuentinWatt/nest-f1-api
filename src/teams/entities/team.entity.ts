@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Driver } from 'src/drivers/entities/driver.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity()
 export class Team {
@@ -7,4 +8,7 @@ export class Team {
 
   @Column()
   name: string;
+
+  @OneToMany(() => Driver, (driver) => driver.team)
+  drivers: Driver[];
 }

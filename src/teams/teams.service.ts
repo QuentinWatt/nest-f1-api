@@ -4,6 +4,7 @@ import { UpdateTeamDto } from './dto/update-team.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Team } from './entities/team.entity';
+import { QueryDriverDto } from 'src/drivers/dto/query-driver.dto';
 
 @Injectable()
 export class TeamsService {
@@ -12,8 +13,18 @@ export class TeamsService {
     private teamsRepository: Repository<Team>,
   ) {}
 
-  findAll() {
-    return this.teamsRepository.find();
+  findAll(query: QueryDriverDto): Promise<Team[]> {
+    const { name } = query;
+
+    const queryBuilder = this.teamsRepository.createQueryBuilder('team');
+
+    if (name) {
+      queryBuilder.andWhere('team.name LIKE :name', {
+        name: `%${name}%`,
+      });
+    }
+
+    return queryBuilder.getMany();
   }
 
   findOne(id: number) {
