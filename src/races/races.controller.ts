@@ -6,10 +6,12 @@ import {
   Put,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { RacesService } from './races.service';
 import { CreateRaceDto } from './dto/create-race.dto';
 import { UpdateRaceDto } from './dto/update-race.dto';
+import { QueryRaceDto } from './dto/query-race.dto';
 
 @Controller('races')
 export class RacesController {
@@ -21,8 +23,8 @@ export class RacesController {
   }
 
   @Get()
-  findAll() {
-    return this.racesService.findAll();
+  findAll(@Query() query: QueryRaceDto) {
+    return this.racesService.findAll(query);
   }
 
   @Get(':id')

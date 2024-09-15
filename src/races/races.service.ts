@@ -4,6 +4,7 @@ import { UpdateRaceDto } from './dto/update-race.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Race } from './entities/race.entity';
 import { Repository } from 'typeorm';
+import { QueryRaceDto } from './dto/query-race.dto';
 
 @Injectable()
 export class RacesService {
@@ -16,8 +17,21 @@ export class RacesService {
     return 'This action adds a new race';
   }
 
-  findAll() {
-    return this.racesRepository.find();
+  findAll(query: QueryRaceDto) {
+    const { name, country, date } = query;
+    const queryBuilder = this.racesRepository.createQueryBuilder('race');
+    if (name) {
+      queryBuilder.where('race.name LIKE :name', { name: `%${name}%` });
+    }
+    if (country) {
+      queryBuilder.where('race.country LIKE :country', {
+        country: `%${country}%`,
+      });
+    }
+    if (date) {
+      queryBuilder.where('race.date LIKE :date', { date: `%${date}%` });
+    }
+    return queryBuilder.getMany();
   }
 
   findOne(id: number) {
