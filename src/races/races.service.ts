@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateRaceDto } from './dto/create-race.dto';
 import { UpdateRaceDto } from './dto/update-race.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,8 +13,13 @@ export class RacesService {
     private racesRepository: Repository<Race>,
   ) {}
 
-  create(createRaceDto: CreateRaceDto) {
-    return 'This action adds a new race';
+  async create(createRaceDto: CreateRaceDto) {
+    try {
+      const race = this.racesRepository.create(createRaceDto);
+      return race;
+    } catch (error) {
+      throw new Error(`Failed to create race: ${error.message}`);
+    }
   }
 
   findAll(query: QueryRaceDto) {
@@ -38,8 +43,21 @@ export class RacesService {
     return this.racesRepository.findOneBy({ id });
   }
 
-  update(id: number, updateRaceDto: UpdateRaceDto) {
-    return `This action updates a #${id} race`;
+  async update(id: number, updateRaceDto: UpdateRaceDto) {
+    const race = this.racesRepository.findOneBy({ id });
+
+    if (!race) {
+      throw new NotFoundException(`Race with id ${id} not found`);
+    }
+
+    try {
+      return await this.racesRepository.save({
+        id,
+        ...updateRaceDto,
+      });
+    } catch (error) {
+      throw new Error(`Failed to update race: ${error.message}`);
+    }
   }
 
   remove(id: number) {

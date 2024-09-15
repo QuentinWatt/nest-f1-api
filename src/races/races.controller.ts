@@ -7,19 +7,23 @@ import {
   Param,
   Delete,
   Query,
+  Res,
+  HttpStatus,
 } from '@nestjs/common';
 import { RacesService } from './races.service';
 import { CreateRaceDto } from './dto/create-race.dto';
 import { UpdateRaceDto } from './dto/update-race.dto';
 import { QueryRaceDto } from './dto/query-race.dto';
+import { Response } from 'express';
 
 @Controller('races')
 export class RacesController {
   constructor(private readonly racesService: RacesService) {}
 
   @Post()
-  create(@Body() createRaceDto: CreateRaceDto) {
-    return this.racesService.create(createRaceDto);
+  async create(@Body() createRaceDto: CreateRaceDto, @Res() res: Response) {
+    const race = await this.racesService.create(createRaceDto);
+    return res.status(HttpStatus.CREATED).json(race);
   }
 
   @Get()
