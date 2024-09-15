@@ -42,6 +42,7 @@ export class DriversService {
       where: { id },
       relations: ['team'],
     });
+
     if (!driver) {
       throw new NotFoundException('Driver not found');
     }
@@ -63,7 +64,7 @@ export class DriversService {
 
       const driver = this.driversRepository.create({
         name: createDriverDto.name,
-        team,
+        team: team,
       });
 
       return await this.driversRepository.save(driver);

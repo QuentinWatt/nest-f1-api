@@ -1,11 +1,5 @@
 import { Team } from '../../teams/entities/team.entity';
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
 @Entity()
 export class Driver {
@@ -15,7 +9,6 @@ export class Driver {
   @Column()
   name: string;
 
-  @OneToOne(() => Team)
-  @JoinColumn()
+  @ManyToOne(() => Team, (team) => team.drivers, { eager: true })
   team: Team;
 }
