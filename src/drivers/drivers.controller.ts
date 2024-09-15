@@ -66,6 +66,6 @@ export class DriversController {
   remove(@Param('id') id: string, @Res() res: Response) {
     this.driversService.remove(+id);
 
-    return res.status(HttpStatus.NO_CONTENT);
+    return res.status(HttpStatus.NO_CONTENT).json();
   }
 }
