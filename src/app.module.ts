@@ -4,7 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DriversModule } from './drivers/drivers.module';
 import { TeamsModule } from './teams/teams.module';
-import { SeedModule } from './seed/seed.module';
+import { RacesModule } from './races/races.module';
 
 @Module({
   imports: [
@@ -20,7 +20,7 @@ import { SeedModule } from './seed/seed.module';
     }),
     DriversModule,
     TeamsModule,
-    SeedModule,
+    RacesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
