@@ -9,5 +9,5 @@ export const AppDataSource = new DataSource({
   database: 'f1-api',
   entities: ['src/**/entities/*.entity{.ts,.js}'],
   synchronize: false, // Avoid using synchronize in production
-  migrations: ['src/migrations/*.ts'],
+  migrations: ['database/migrations/*.ts'],
 });

@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DriversModule } from './drivers/drivers.module';
 import { TeamsModule } from './teams/teams.module';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { TeamsModule } from './teams/teams.module';
     }),
     DriversModule,
     TeamsModule,
+    SeedModule,
   ],
   controllers: [AppController],
   providers: [AppService],
