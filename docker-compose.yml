@@ -1,0 +1,32 @@
+services:
+  nestjs-app:
+    container_name: f1_api
+    build: .
+    ports:
+      - '${DOCKER_PORT}:3000'
+    depends_on:
+      - mysql
+    environment:
+      - DATABASE_HOST=f1_db
+      - DATABASE_PORT=3306
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=password
+      - DATABASE_NAME=f1-api
+    networks:
+      - nest_network
+
+  mysql:
+    container_name: f1_db
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: f1-api
+    ports:
+      - "${DOCKER_DB_PORT}:3306"
+    networks:
+      - nest_network
+
+networks:
+  nest_network:
+    driver: bridge
